@@ -1,0 +1,16 @@
+# Données générées par « python donnees/generer_donnees.py » : déterministes,
+# régénérables en une minute, et trop lourdes pour le dépôt (≈ 60 Mo).
+donnees/*.csv
+donnees/*.log
+
+# Tout ce que les TP écrivent : Parquet, modèles, flux, points de reprise.
+sorties/
+flux/entree/
+flux/points-de-reprise/
+
+# Résidus d'exécution
+__pycache__/
+.ipynb_checkpoints/
+spark-warehouse/
+metastore_db/
+derby.log
