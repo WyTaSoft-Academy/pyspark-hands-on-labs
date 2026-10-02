@@ -82,9 +82,13 @@ exactement comme on l'écrirait en pandas.
 suivants : les colonnes du CSV typées, plus `heure`, `jour_semaine`, `week_end`.
 
 Comparez la taille du dossier Parquet à celle du CSV, puis **comptez les
-fichiers produits**. Sans rien faire, le dédoublonnage laisse 200 partitions,
-donc 200 fichiers de 60 ko : ajoutez `coalesce(4)` avant `write` et regardez la
-différence. Un fichier par partition, toujours.
+fichiers produits** : un par partition, toujours. Le dédoublonnage annonce
+200 partitions (`spark.sql.shuffle.partitions`), et pourtant vous n'obtenez
+que 2 fichiers : l'exécution adaptative (AQE, active par défaut) regroupe après
+coup les partitions trop petites. Désactivez-la
+(`spark.conf.set("spark.sql.adaptive.enabled", "false")`) et réécrivez :
+200 fichiers de 60 ko. Ajoutez alors `coalesce(4)` avant `write` : 4 fichiers.
+`coalesce` ne fait que réduire, il ne sert à rien quand AQE en a déjà laissé moins.
 
 ### 8. Comparer les lectures
 

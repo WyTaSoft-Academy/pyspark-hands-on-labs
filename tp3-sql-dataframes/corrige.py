@@ -198,9 +198,12 @@ print(psdf.groupby("type_usager")["duree_min"].mean().sort_index())
 
 # %%
 cible = os.path.join(SORTIES, "trajets-propres")
-# coalesce(4) : sans lui, le dédoublonnage laisse 200 partitions, donc 200
-# fichiers de 60 ko. Un fichier par partition, et des fichiers minuscules
-# coûtent plus cher à lister qu'à lire. Quatre fichiers suffisent ici.
+# Un fichier par partition. Le dédoublonnage annonce 200 partitions, mais
+# l'exécution adaptative (AQE, active par défaut) regroupe les trop petites :
+# 2 fichiers ici (local[2]). Sans AQE, ce seraient 200 fichiers de 60 ko, qui
+# coûtent plus cher à lister qu'à lire. coalesce(4) borne le nombre de
+# fichiers quel que soit le réglage ; il ne fait que réduire : ici, il ne
+# change rien.
 propres.coalesce(4).write.mode("overwrite").parquet(cible)
 
 

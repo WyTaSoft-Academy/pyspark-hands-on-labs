@@ -135,8 +135,8 @@ enrichis = None  # TODO
 #
 # La table **propre** de l'étape 2, dans `../sorties/trajets-propres`,
 # en mode `overwrite`. Comparez la taille au CSV, puis comptez les fichiers
-# écrits : un par partition. `coalesce(4)` avant `write` évite d'en produire
-# deux cents de 60 ko.
+# écrits : un par partition. Le dédoublonnage en annonce 200 : combien en
+# trouvez-vous ? Et si vous désactivez `spark.sql.adaptive.enabled` ?
 
 # %%
 cible = os.path.join(SORTIES, "trajets-propres")
